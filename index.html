@@ -273,6 +273,17 @@
   }
   .opt.selected .check::after{content:'✓';}
 
+  /* priority ranking mode */
+  .options.rank-mode .opt.selected .check::after{
+    content: attr(data-rank);
+    font-size:12px; font-weight:700; font-family:'Jua',sans-serif;
+  }
+  .rank-hint{
+    font-size:12px; color:var(--brown-soft); margin:-4px 0 12px;
+    display:flex; align-items:center; gap:5px;
+  }
+  .rank-hint::before{content:'🐾'; font-size:12px;}
+
   .etc-input{
     margin-top:2px;
     width:100%;
@@ -489,16 +500,18 @@
       </div>
     </section>
 
-    <!-- Screen 3 : Q3 multi -->
+    <!-- Screen 3 : Q3 priority ranking -->
     <section class="screen" data-screen="3">
-      <div class="hint-badge">질문 2 · 중복 선택 가능</div>
-      <h1 class="headline">오늘 동성로는<br>어떤 일로 오셨나요?</h1>
-      <div class="options" id="q3opts">
-        <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>타지 여행</div>
-        <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>학원</div>
-        <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>쇼핑</div>
-        <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>취미 생활</div>
-        <div class="opt" onclick="toggleMulti(this,'q3', true)"><span class="check"></span>기타</div>
+      <div class="hint-badge">질문 2 · 우선순위 선택</div>
+      <h1 class="headline">주로 동성로는<br>어떤 일로 오시나요?</h1>
+      <p class="rank-hint">중요한 순서대로 눌러주세요, 번호가 자동으로 매겨져요</p>
+      <div class="options rank-mode" id="q3opts">
+        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>여행</div>
+        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>학원</div>
+        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>쇼핑</div>
+        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>직장</div>
+        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>취미</div>
+        <div class="opt circle" onclick="toggleRank(this,'q3', true)"><span class="check"></span>기타</div>
       </div>
       <input type="text" class="etc-input" id="q3etc" placeholder="직접 입력해주세요">
       <div class="nav-row">
@@ -507,17 +520,17 @@
       </div>
     </section>
 
-    <!-- Screen 4 : Q4 multi -->
+    <!-- Screen 4 : Q4 priority ranking -->
     <section class="screen" data-screen="4">
-      <div class="hint-badge">질문 3 · 중복 선택 가능</div>
-      <h1 class="headline">포토부스가 생긴다면<br>어디에 있으면 좋을까요?</h1>
-      <div class="options" id="q4opts">
-        <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>대학교</div>
-        <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>직장 근처</div>
-        <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>지하철역</div>
-        <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>공원</div>
-        <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>이용 안 할 것 같아요</div>
-        <div class="opt" onclick="toggleMulti(this,'q4', true)"><span class="check"></span>기타</div>
+      <div class="hint-badge">질문 3 · 우선순위 선택</div>
+      <h1 class="headline">굿즈 자판기가 생긴다면<br>어디에 있으면 좋을까요?</h1>
+      <p class="rank-hint">중요한 순서대로 눌러주세요, 번호가 자동으로 매겨져요</p>
+      <div class="options rank-mode" id="q4opts">
+                <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>동네 근처</div>
+        <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>대학교</div>
+        <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>직장 근처</div>
+        <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>지하철역</div>
+        <div class="opt circle" onclick="toggleRank(this,'q4', true)"><span class="check"></span>기타</div>
       </div>
       <input type="text" class="etc-input" id="q4etc" placeholder="직접 입력해주세요">
       <div class="nav-row">
@@ -660,6 +673,44 @@
     }
     const nextBtn = document.getElementById(key+'next');
     if(nextBtn) nextBtn.disabled = selectedTexts.length === 0;
+  }
+
+  function toggleRank(el, key, isEtc){
+    const group = el.parentElement;
+    const checkEl = el.querySelector('.check');
+
+    if(el.classList.contains('selected')){
+      const removedRank = parseInt(checkEl.dataset.rank, 10);
+      el.classList.remove('selected');
+      delete checkEl.dataset.rank;
+      group.querySelectorAll('.opt.selected').forEach(o=>{
+        const oCheck = o.querySelector('.check');
+        const r = parseInt(oCheck.dataset.rank, 10);
+        if(r > removedRank){ oCheck.dataset.rank = r - 1; }
+      });
+    } else {
+      const currentCount = group.querySelectorAll('.opt.selected').length;
+      el.classList.add('selected');
+      checkEl.dataset.rank = currentCount + 1;
+    }
+
+    const ranked = Array.from(group.querySelectorAll('.opt.selected'))
+      .sort((a,b) => parseInt(a.querySelector('.check').dataset.rank,10) - parseInt(b.querySelector('.check').dataset.rank,10))
+      .map(o => o.textContent.trim());
+    state[key] = ranked;
+
+    const etcInput = document.getElementById(key+'etc');
+    if(etcInput){
+      const anyEtcSelected = ranked.includes('기타');
+      if(anyEtcSelected){
+        etcInput.classList.add('show');
+      } else {
+        etcInput.classList.remove('show');
+        etcInput.value = '';
+      }
+    }
+    const nextBtn = document.getElementById(key+'next');
+    if(nextBtn) nextBtn.disabled = ranked.length === 0;
   }
 
   ['q2','q3','q4'].forEach(key=>{

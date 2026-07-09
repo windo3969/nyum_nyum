@@ -2,17 +2,21 @@
 <!--
   이미지 교체 안내
   이 파일과 같은 위치에 images 폴더가 있어야 합니다.
-  - images/nyum1.png : 첫 화면 "택1" 질문의 이미지1, 감사 화면
-  - images/nyum2.png : 첫 화면 "택1" 질문의 이미지2, 컨셉 설명 화면
+  - images/character1.png : 첫 화면 "택1" 질문의 이미지1, 감사 화면
+  - images/character2.png : 첫 화면 "택1" 질문의 이미지2
+  - images/booth-photo.jpg : 컨셉 설명 화면의 감성적인 부스(자판기) 사진 [새로 추가 - 직접 넣어주세요]
+  - images/goods-sample1.jpg, goods-sample2.jpg, goods-sample3.jpg : 컨셉 설명 화면의 커스텀 굿즈 예시 사진 3장 [새로 추가 - 직접 넣어주세요]
+  - images/reward-sample1.jpg ~ reward-sample6.jpg : 마지막 인터뷰 참여 유도 화면의 완성 굿즈 예시 사진 6장 [새로 추가 - 직접 넣어주세요]
 
-  교체 방법: images 폴더 안의 파일을 같은 이름(nyum1.png / nyum2.png)으로 덮어쓰면 됩니다.
-  다른 형식(jpg 등)을 쓰고 싶다면, 아래 <img> 태그의 src 확장자도 함께 바꿔주세요.
+  교체 방법: images 폴더 안에 위 파일명 그대로 사진을 넣으면 자동으로 표시됩니다.
+  사진이 없으면 점선 테두리의 안내 문구가 대신 보여요.
+  다른 형식(png, jpg 등)을 쓰고 싶다면, 아래 <img> 태그의 src 확장자도 함께 바꿔주세요.
 -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>뇸뇸 - 당신의 순간을 굿즈로 만들어드려요</title>
+<title>뇸뇸 - 순간을 굿즈로 만들어드려요</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
@@ -182,6 +186,55 @@
   .flow-text b{display:block; font-size:14.5px; color:var(--brown); margin-bottom:1px;}
   .flow-text span{font-size:12.5px; color:var(--brown-soft);}
   .product-pills{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;}
+
+  /* photo insert slots */
+  .section-label{
+    font-size:12.5px; font-weight:700; color:var(--brown-soft);
+    margin:18px 0 8px; display:flex; align-items:center; gap:6px;
+  }
+  .section-label::before{content:'📷'; font-size:13px;}
+  .photo-frame{
+    position:relative; width:100%; border-radius:18px; overflow:hidden;
+    background:#FBF3EA; border:2px dashed #E7CDBA;
+    box-shadow:0 4px 14px rgba(107,74,59,0.06);
+  }
+  .photo-frame.vending{height:230px;}
+  .photo-frame img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo-fallback{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; text-align:center;
+    padding:14px; color:var(--brown-soft); font-size:12.5px; line-height:1.5;
+  }
+  .photo-fallback .icon{font-size:26px;}
+  .photo-grid{display:grid; grid-template-columns:1fr; gap:12px;}
+  .photo-grid .photo-frame{height:190px; border-radius:18px;}
+  .photo-grid .photo-fallback{font-size:12.5px; padding:10px;}
+  .photo-grid .photo-fallback .icon{font-size:24px;}
+  .photo-caption{
+    text-align:center; font-size:12px; color:var(--brown-soft); margin-top:-4px;
+  }
+
+  /* trend & case cards */
+  .trend-card, .case-card{
+    background:var(--card); border-radius:18px; padding:16px;
+    box-shadow:0 4px 14px rgba(107,74,59,0.07); margin-top:14px;
+  }
+  .trend-card{border-left:4px solid var(--gold);}
+  .case-card{border-left:4px solid var(--mint-deep);}
+  .card-tag{
+    display:inline-block; font-family:'Jua',sans-serif; font-size:11.5px;
+    padding:4px 10px; border-radius:99px; margin-bottom:8px;
+  }
+  .trend-card .card-tag{background:#FFF3D9; color:#B8860B;}
+  .case-card .card-tag{background:#EAFBF5; color:var(--mint-deep);}
+  .trend-card p, .case-card p{
+    margin:0; font-size:13.5px; line-height:1.7; color:var(--brown);
+  }
+  .case-card .case-title{
+    font-family:'Jua',sans-serif; font-size:14.5px; color:var(--brown);
+    margin:0 0 6px;
+  }
+  .case-card .case-meta{font-size:12px; color:var(--brown-soft); margin-left:6px; font-family:'Gowun Dodum', sans-serif;}
   .pill{
     background:var(--mint); color:#22574A; font-size:12.5px; font-weight:700;
     padding:7px 13px; border-radius:99px;
@@ -327,7 +380,7 @@
 
   <div class="topbar" id="topbar" style="display:none;">
     <div class="brand-row">
-      <div class="brand"><span class="paw">🐾</span>커스텀 소품부스</div>
+      <div class="brand"><span class="paw">🐾</span>커스터 굿즈자판기</div>
       <div class="step-count" id="stepCount">1 / 8</div>
     </div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
@@ -344,11 +397,11 @@
       <div class="choice-row">
         <div class="choice-card" data-choice="1" onclick="selectCharacter(this,'1')">
           <img src="images/nyum1.png" alt="이미지1 - 다양한 포즈">
-          <div class="choice-label">멍이</div>
+          <div class="choice-label">이미지 1</div>
         </div>
         <div class="choice-card" data-choice="2" onclick="selectCharacter(this,'2')">
           <img src="images/nyum2.png" alt="이미지2 - 쿠키 먹는 모습">
-          <div class="choice-label">구름이</div>
+          <div class="choice-label">이미지 2</div>
         </div>
       </div>
       <button class="start-btn" id="landingNext" disabled onclick="goTo(1)">골랐어요, 다음으로 🐾</button>
@@ -357,54 +410,70 @@
 
     <!-- Screen 1 : Concept intro -->
     <section class="screen" data-screen="1">
-      <div class="eyebrow">🐾 뇸뇸이 뭐냐면요</div>
-      <div class="concept-hero"><img src="images/nyum2.png" alt="추억멍 캐릭터"></div>
-      <h1 class="headline" style="text-align:center;">순간을 들려주면,<br>멍이가 그림으로 만들어줘요</h1>
+      <div class="eyebrow">🐾 굿즈 자판기가 뭐냐면요</div>
+      <h1 class="headline" style="text-align:center;">순간을 들려주면,<br>굿즈로 만들어줘요</h1>
       <p class="sub" style="text-align:center;">부스에 들어가서 소중한 추억과 그때 느낀 감정을 이야기하면, AI가 그 순간을 이미지로 그려주고 원하는 굿즈에 담아드려요.</p>
-      <div class="flow-steps">
+
+      <div class="section-label">감성적인 부스 사진</div>
+      <div class="photo-frame vending">
+        <img src="images/goods.JPG" alt="추억멍 부스 사진" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      </div>
+
+      <div class="trend-card">
+        <span class="card-tag">TREND KOREA</span>
+        <p>최근 트렌드코리아를 비롯한 여러 소비 트렌드 리포트에서 '레트로' 감성이 꾸준히 핵심 키워드로 꼽히고 있어요. 스마트폰 사진첩보다 손에 잡히는 물건, 필름 카메라, 자판기 같은 아날로그 경험에서 사람들은 오히려 특별함을 느끼고 있죠. 추억멍은 이 흐름 위에서, 나만의 기억을 만질 수 있는 형태로 남기는 경험을 제안해요.</p>
+      </div>
+
+      <div class="case-card">
+        <span class="card-tag">참고 사례</span>
+        <p class="case-title">마음약방 <span class="case-meta">서울문화재단 · 2015~2020</span></p>
+        <p>자판기에 500원을 넣으면 그날의 감정에 맞는 시, 그림, 작은 위로 물품이 처방전처럼 나오는 캠페인이었어요. 5년간 11만 명 넘는 시민이 이용했고 칸 국제광고제에서도 수상했죠. 사람들은 이미 '감정을 물성 있는 형태로 받는 경험'에 크게 반응한 적이 있어요.</p>
+      </div>
+
+      <div class="flow-steps" style="margin-top:16px;">
         <div class="flow-step">
           <div class="flow-num">1</div>
           <div class="flow-text"><b>부스 입장</b><span>추억과 감정을 편하게 이야기해요</span></div>
         </div>
         <div class="flow-step">
           <div class="flow-num">2</div>
-          <div class="flow-text"><b>AI가 이미지 생성</b><span>그 순간을 나만의 굿즈로 만들어줘요</span></div>
+          <div class="flow-text"><b>AI가 이미지 생성</b><span>그 순간을 나만의 그림으로 만들어줘요</span></div>
         </div>
         <div class="flow-step">
           <div class="flow-num">3</div>
           <div class="flow-text"><b>굿즈로 완성</b><span>원하는 제품에 담아 바로 받아가요</span></div>
         </div>
       </div>
-      <div class="product-pills">
-        <span class="pill">📱 폰케이스</span>
-        <span class="pill">🖊️ 볼펜</span>
-        <span class="pill">🥤 텀블러</span>
-        <span class="pill">＋ 더보기</span>
+
+      <div class="section-label">커스텀 굿즈 예시</div>
+      <div class="photo-grid">
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample1.jpeg" alt="커스텀 굿즈 예시1 - 폰케이스" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample2.jpeg" alt="커스텀 굿즈 예시2 - 볼펜" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample3.jpeg" alt="커스텀 굿즈 예시3 - 텀블러" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
       </div>
+
       <div class="nav-row">
         <button class="btn btn-ghost" onclick="goTo(0)">이전</button>
         <button class="btn btn-primary" onclick="goTo(2)">궁금해요, 다음! →</button>
       </div>
     </section>
 
-    <!-- Screen 2 : Q1 single -->
-    <section class="screen" data-screen="2">
-      <div class="hint-badge">질문 1 · 하나만 골라주세요</div>
-      <h1 class="headline">소중한 추억을 물건으로<br>간직하고 싶다고 생각해본 적 있나요?</h1>
-      <div class="options" id="q1opts">
-        <div class="opt circle" onclick="selectSingle(this,'q1')"><span class="check"></span>자주 그래요</div>
-        <div class="opt circle" onclick="selectSingle(this,'q1')"><span class="check"></span>어쩌다 한 번 정도요</div>
-        <div class="opt circle" onclick="selectSingle(this,'q1')"><span class="check"></span>거의 못 느껴요</div>
-      </div>
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(1)">이전</button>
-        <button class="btn btn-primary" id="q1next" disabled onclick="goTo(3)">다음</button>
-      </div>
-    </section>
 
-    <!-- Screen 3 : Q2 multi + etc -->
-    <section class="screen" data-screen="3">
-      <div class="hint-badge">질문 2 · 중복 선택 가능</div>
+    <!-- Screen 2 : Q2 multi + etc -->
+    <section class="screen" data-screen="2">
+      <div class="hint-badge">질문 1 · 중복 선택 가능</div>
       <h1 class="headline">내가 추억을 간직하는 방식은?</h1>
       <div class="options" id="q2opts">
         <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>액자</div>
@@ -415,34 +484,33 @@
       </div>
       <input type="text" class="etc-input" id="q2etc" placeholder="직접 입력해주세요">
       <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(2)">이전</button>
-        <button class="btn btn-primary" id="q2next" disabled onclick="goTo(4)">다음</button>
+        <button class="btn btn-ghost" onclick="goTo(1)">이전</button>
+        <button class="btn btn-primary" id="q2next" disabled onclick="goTo(3)">다음</button>
       </div>
     </section>
 
-    <!-- Screen 4 : Q3 multi -->
-    <section class="screen" data-screen="4">
-      <div class="hint-badge">질문 3 · 중복 선택 가능</div>
+    <!-- Screen 3 : Q3 multi -->
+    <section class="screen" data-screen="3">
+      <div class="hint-badge">질문 2 · 중복 선택 가능</div>
       <h1 class="headline">오늘 동성로는<br>어떤 일로 오셨나요?</h1>
       <div class="options" id="q3opts">
         <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>타지 여행</div>
         <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>학원</div>
         <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>쇼핑</div>
-        <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>취미</div>
-                <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>힐링</div>
+        <div class="opt" onclick="toggleMulti(this,'q3')"><span class="check"></span>취미 생활</div>
         <div class="opt" onclick="toggleMulti(this,'q3', true)"><span class="check"></span>기타</div>
       </div>
       <input type="text" class="etc-input" id="q3etc" placeholder="직접 입력해주세요">
       <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(3)">이전</button>
-        <button class="btn btn-primary" id="q3next" disabled onclick="goTo(5)">다음</button>
+        <button class="btn btn-ghost" onclick="goTo(2)">이전</button>
+        <button class="btn btn-primary" id="q3next" disabled onclick="goTo(4)">다음</button>
       </div>
     </section>
 
-    <!-- Screen 5 : Q4 multi -->
-    <section class="screen" data-screen="5">
-      <div class="hint-badge">질문 4 · 중복 선택 가능</div>
-      <h1 class="headline">포토부스가 생긴다면<br>어디에 있으면 좋을까요?</h1>
+    <!-- Screen 4 : Q4 multi -->
+    <section class="screen" data-screen="4">
+      <div class="hint-badge">질문 3 · 중복 선택 가능</div>
+      <h1 class="headline">굿즈 자판기가 생긴다면<br>어디에 있으면 좋을까요?</h1>
       <div class="options" id="q4opts">
         <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>대학교</div>
         <div class="opt" onclick="toggleMulti(this,'q4')"><span class="check"></span>직장 근처</div>
@@ -453,59 +521,63 @@
       </div>
       <input type="text" class="etc-input" id="q4etc" placeholder="직접 입력해주세요">
       <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(4)">이전</button>
-        <button class="btn btn-primary" id="q4next" disabled onclick="goTo(6)">다음</button>
+        <button class="btn btn-ghost" onclick="goTo(3)">이전</button>
+        <button class="btn btn-primary" id="q4next" disabled onclick="goTo(5)">다음</button>
       </div>
     </section>
 
-    <!-- Screen 6 : Q5 single + etc -->
-    <section class="screen" data-screen="6">
-      <div class="hint-badge">질문 5 · 하나만 골라주세요</div>
-      <h1 class="headline">내가 앞으로<br>만들고 싶은 순간이 있다면?</h1>
-      <div class="options" id="q5opts">
-        <div class="opt circle" onclick="selectSingle(this,'q5')"><span class="check"></span>원하는 회사 취업</div>
-        <div class="opt circle" onclick="selectSingle(this,'q5')"><span class="check"></span>추구미 이루기 (자기계발)</div>
-        <div class="opt circle" onclick="selectSingle(this,'q5')"><span class="check"></span>연애</div>
-        <div class="opt circle" onclick="selectSingle(this,'q5', true)"><span class="check"></span>기타</div>
-      </div>
-      <input type="text" class="etc-input" id="q5etc" placeholder="직접 입력해주세요">
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(5)">이전</button>
-        <button class="btn btn-primary" id="q5next" disabled onclick="goTo(7)">다음</button>
-      </div>
-    </section>
-
-    <!-- Screen 7 : Follow-up interview invite -->
-    <section class="screen" data-screen="7">
+    <!-- Screen 5 : Follow-up interview invite -->
+    <section class="screen" data-screen="5">
       <div class="eyebrow">🐾 마지막 질문이에요</div>
-      <h1 class="headline">직접 체험하고<br>후기 남겨주실래요?</h1>
+      <h1 class="headline">직접 체험하고<br>후기를 남겨주세요!</h1>
       <div class="interview-card">
         <p class="sub" style="margin:0;">AI가 몇 가지 질문을 드리고, 답변을 바탕으로 추억을 이미지로 만들어드려요. 완성된 이미지가 원하는 느낌인지 짧게 후기만 남겨주시면 돼요.</p>
         <ul>
-          <li><b>소요 시간</b> 약 20~30분</li>
-          <li><b>질문 예시</b> 남기고 싶은 순간은 언제, 어디였나요? / 어떤 감정이 가장 컸나요? / 그 장면에서 가장 기억나는 키워드?</li>
+          <li><b>질문 예시</b> 그 순간은 언제, 어디였나요? / 어떤 감정이 가장 컸나요? / 그 장면에서 가장 기억나는 색이나 소리는?</li>
           <li><b>참여 혜택</b> 완성된 이미지 + 미니 굿즈 증정</li>
         </ul>
       </div>
-      <div class="options">
-        <div class="opt circle" onclick="selectSingle(this,'q6')"><span class="check"></span>네, 참여할게요!</div>
-        <div class="opt circle" onclick="selectSingle(this,'q6')"><span class="check"></span>다음 기회에요</div>
+
+      <div class="section-label">참여하면 이런 굿즈를 받아가요</div>
+      <div class="photo-grid">
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample4.jpeg" alt="완성 예시1 - 여행 순간 폰케이스" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample5.jpeg" alt="완성 예시2 - 합격 순간 텀블러" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample6.jpeg" alt="완성 예시3 - 첫 만남 키링" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample7.jpeg" alt="완성 예시4 - 우정 볼펜" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/sample8.jpeg" alt="완성 예시5 - 가족 여행 엽서" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          </div>
+        </div>
       </div>
-      <div class="contact-row" id="contactRow" style="display:none;">
-        <input type="text" id="contactName" placeholder="이름 (선택)">
-        <input type="tel" id="contactPhone" placeholder="연락처 (선택, 인터뷰 안내용)">
-      </div>
+
       <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(6)">이전</button>
-        <button class="btn btn-primary" id="q6next" disabled onclick="finishSurvey()">제출하기 🐾</button>
+        <button class="btn btn-ghost" onclick="goTo(4)">이전</button>
+        <button class="btn btn-primary" id="q6next" disabled onclick="finishSurvey()">끝! 🐾</button>
       </div>
     </section>
 
-    <!-- Screen 8 : Thanks -->
-    <section class="screen thanks" data-screen="8">
-      <img src="images/nyum1.png" alt="고마워요">
+    <!-- Screen 6 : Thanks -->
+    <section class="screen thanks" data-screen="6">
+      <img src="images/character1.png" alt="고마워요">
       <h1 class="headline">참여해주셔서<br>정말 고마워요! 🩷</h1>
-      <p class="sub">덕분에 뇸뇸이 한 걸음 더<br>귀여워질 수 있을 것 같아요.</p>
+      <p class="sub">덕분에 추억멍이 한 걸음 더<br>귀여워질 수 있을 것 같아요.</p>
       <div class="coupon">
         <b>🎁 안내</b><br>
         <span style="font-size:13.5px; color:#6B4A3B;">참여해주신 내용은 제품 개발에만 사용되며, 인터뷰 신청자에게는 별도로 연락드릴게요.</span>
@@ -518,17 +590,16 @@
 <script>
   const state = {
     character: null,
-    q1: null, q2: null, q2etc:'',
+    q2: null, q2etc:'',
     q3: [], q3etc:'',
     q4: [], q4etc:'',
-    q5: null, q5etc:'',
     q6: null, name:'', phone:''
   };
-  const totalSteps = 8; // steps 1~8 shown in progress (0 is hook, excluded from bar)
+  const totalSteps = 5; // steps 1~5 shown in progress (0 is hook, excluded from bar)
 
   function showTopbar(step){
     const topbar = document.getElementById('topbar');
-    if(step === 0 || step === 8){ topbar.style.display = 'none'; return; }
+    if(step === 0 || step === 6){ topbar.style.display = 'none'; return; }
     topbar.style.display = 'block';
     const pct = Math.round((step / totalSteps) * 100);
     document.getElementById('progressFill').style.width = pct + '%';
@@ -591,7 +662,7 @@
     if(nextBtn) nextBtn.disabled = selectedTexts.length === 0;
   }
 
-  ['q2','q3','q4','q5'].forEach(key=>{
+  ['q2','q3','q4'].forEach(key=>{
     const input = document.getElementById(key+'etc');
     if(input){
       input.addEventListener('input', ()=>{ state[key+'etc'] = input.value; });
@@ -602,7 +673,7 @@
 
   function finishSurvey(){
     console.log('추억멍 설문 결과', JSON.stringify(state, null, 2));
-    goTo(8);
+    goTo(6);
   }
 </script>
 </body>
