@@ -365,6 +365,10 @@
       height: 300px;
     }
 
+    .photo-frame.eventcut {
+      height: 600px;
+    }
+
     .photo-frame img {
       width: 100%;
       height: 100%;
@@ -982,6 +986,12 @@
 
         <div class="section-label">참여하면 이런 굿즈를 받아가요</div>
         <div class="photo-grid">
+          <div>
+            <div class="photo-frame eventcut">
+              <img src="images/event_4_3.png" alt="이벤트"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
           <div>
             <div class="photo-frame">
               <img src="images/sample4.jpeg" alt="완성 예시1 - 여행 순간 폰케이스"
