@@ -2,8 +2,8 @@
 <!--
   이미지 교체 안내
   이 파일과 같은 위치에 images 폴더가 있어야 합니다.
-  - images/character1.png : 첫 화면 "택1" 질문의 이미지1, 감사 화면
-  - images/character2.png : 첫 화면 "택1" 질문의 이미지2
+  - images/character1.png : 첫 화면 "택1" 질문의 멍이, 감사 화면
+  - images/character2.png : 첫 화면 "택1" 질문의 구름이
   - images/booth-photo.jpg : 컨셉 설명 화면의 감성적인 부스(자판기) 사진 [새로 추가 - 직접 넣어주세요]
   - images/goods-sample1.jpg, goods-sample2.jpg, goods-sample3.jpg : 컨셉 설명 화면의 커스텀 굿즈 예시 사진 3장 [새로 추가 - 직접 넣어주세요]
   - images/reward-sample1.jpg ~ reward-sample6.jpg : 마지막 인터뷰 참여 유도 화면의 완성 굿즈 예시 사진 6장 [새로 추가 - 직접 넣어주세요]
@@ -13,719 +13,1154 @@
   다른 형식(png, jpg 등)을 쓰고 싶다면, 아래 <img> 태그의 src 확장자도 함께 바꿔주세요.
 -->
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>뇸뇸 - 순간을 굿즈로 만들어드려요</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --cream:#FFF6EC;
-    --card:#FFFFFF;
-    --pink:#FF98B4;
-    --pink-deep:#FF7098;
-    --pink-pale:#FFE3EC;
-    --mint:#B9E8DA;
-    --mint-deep:#7FCFB8;
-    --gold:#FFC857;
-    --brown:#6B4A3B;
-    --brown-soft:#9C8073;
-    --shadow: 0 10px 30px rgba(107,74,59,0.12);
-  }
-  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family:'Gowun Dodum', sans-serif;
-    background:
-      radial-gradient(circle at 12% 8%, #FFE9CF 0%, transparent 45%),
-      radial-gradient(circle at 88% 92%, #FFD9E4 0%, transparent 40%),
-      var(--cream);
-    color:var(--brown);
-    min-height:100vh;
-    min-height:100dvh;
-    display:flex;
-    justify-content:center;
-    overflow-x:hidden;
-  }
-  .app{
-    width:100%;
-    max-width:480px;
-    min-height:100vh;
-    min-height:100dvh;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    padding-bottom:env(safe-area-inset-bottom);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>뇸뇸 - 순간을 굿즈로 만들어드려요</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FFF6EC;
+      --card: #FFFFFF;
+      --pink: #FF98B4;
+      --pink-deep: #FF7098;
+      --pink-pale: #FFE3EC;
+      --mint: #B9E8DA;
+      --mint-deep: #7FCFB8;
+      --gold: #FFC857;
+      --brown: #6B4A3B;
+      --brown-soft: #9C8073;
+      --shadow: 0 10px 30px rgba(107, 74, 59, 0.12);
+    }
 
-  /* decorative floating bits */
-  .deco{position:fixed; pointer-events:none; opacity:.55; z-index:0; user-select:none;}
-  .deco.d1{top:6%; left:6%; font-size:22px; transform:rotate(-12deg);}
-  .deco.d2{top:14%; right:8%; font-size:16px; transform:rotate(10deg);}
-  .deco.d3{bottom:10%; left:9%; font-size:18px; transform:rotate(8deg);}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  /* progress header */
-  .topbar{
-    position:sticky; top:0; z-index:20;
-    padding:14px 20px 10px;
-    background:linear-gradient(180deg, var(--cream) 70%, transparent);
-  }
-  .brand-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
-  .brand{font-family:'Jua',sans-serif; font-size:18px; color:var(--pink-deep); display:flex; align-items:center; gap:6px;}
-  .brand .paw{font-size:16px;}
-  .step-count{font-size:12px; color:var(--brown-soft); font-weight:600;}
-  .progress-track{
-    height:10px; background:var(--pink-pale); border-radius:99px; overflow:hidden;
-    box-shadow: inset 0 1px 3px rgba(107,74,59,0.08);
-  }
-  .progress-fill{
-    height:100%; width:0%;
-    background:linear-gradient(90deg, var(--gold), var(--pink));
-    border-radius:99px;
-    transition:width .45s cubic-bezier(.65,0,.35,1);
-    position:relative;
-  }
-  .progress-fill::after{
-    content:'🐾'; position:absolute; right:-10px; top:50%; transform:translateY(-50%);
-    font-size:14px;
-  }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-  main{
-    flex:1;
-    position:relative;
-    z-index:1;
-    display:flex;
-    flex-direction:column;
-  }
+    body {
+      font-family: 'Gowun Dodum', sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, #FFE9CF 0%, transparent 45%),
+        radial-gradient(circle at 88% 92%, #FFD9E4 0%, transparent 40%),
+        var(--cream);
+      color: var(--brown);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+    }
 
-  .screen{
-    display:none;
-    flex-direction:column;
-    padding:14px 20px 28px;
-    animation:riseIn .4s cubic-bezier(.2,.8,.2,1);
-    flex:1;
-  }
-  .screen.active{display:flex;}
-  @keyframes riseIn{
-    from{opacity:0; transform:translateY(14px);}
-    to{opacity:1; transform:translateY(0);}
-  }
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
 
-  h1.headline{
-    font-family:'Jua',sans-serif;
-    font-size:24px;
-    line-height:1.4;
-    color:var(--brown);
-    margin:6px 0 4px;
-  }
-  p.sub{
-    font-size:14.5px;
-    color:var(--brown-soft);
-    line-height:1.6;
-    margin:0 0 18px;
-  }
-  .eyebrow{
-    display:inline-flex; align-items:center; gap:6px;
-    font-size:12.5px; font-weight:700; color:var(--mint-deep);
-    background:#EAFBF5; padding:5px 12px; border-radius:99px;
-    width:fit-content; margin-bottom:10px;
-  }
+    /* decorative floating bits */
+    .deco {
+      position: fixed;
+      pointer-events: none;
+      opacity: .55;
+      z-index: 0;
+      user-select: none;
+    }
 
-  /* Hook screen - image choice */
-  .choice-row{
-    display:flex; gap:12px; margin-top:6px;
-  }
-  .choice-card{
-    flex:1;
-    background:var(--card);
-    border-radius:22px;
-    padding:10px;
-    box-shadow:var(--shadow);
-    border:3px solid transparent;
-    text-align:center;
-    cursor:pointer;
-    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-  }
-  .choice-card:active{transform:scale(.96);}
-  .choice-card.selected{
-    border-color:var(--pink);
-    box-shadow:0 0 0 6px var(--pink-pale), var(--shadow);
-  }
-  .choice-card img{
-    width:100%; height:150px; object-fit:cover; border-radius:14px; display:block;
-    background:#FBF3EA;
-  }
-  .choice-label{
-    margin-top:8px; font-family:'Jua',sans-serif; font-size:14px; color:var(--brown);
-  }
+    .deco.d1 {
+      top: 6%;
+      left: 6%;
+      font-size: 22px;
+      transform: rotate(-12deg);
+    }
 
-  /* concept screen */
-  .concept-hero{
-    display:flex; justify-content:center; margin:6px 0 14px;
-  }
-  .concept-hero img{
-    width:150px; height:150px; object-fit:cover; border-radius:50%;
-    border:5px solid var(--card); box-shadow:var(--shadow);
-  }
-  .flow-steps{
-    display:flex; flex-direction:column; gap:10px; margin:6px 0 18px;
-  }
-  .flow-step{
-    display:flex; align-items:center; gap:12px;
-    background:var(--card); border-radius:16px; padding:12px 14px;
-    box-shadow:0 4px 14px rgba(107,74,59,0.07);
-  }
-  .flow-num{
-    flex-shrink:0; width:34px; height:34px; border-radius:50%;
-    background:var(--pink-pale); color:var(--pink-deep);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Jua',sans-serif; font-size:15px;
-  }
-  .flow-text b{display:block; font-size:14.5px; color:var(--brown); margin-bottom:1px;}
-  .flow-text span{font-size:12.5px; color:var(--brown-soft);}
-  .product-pills{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;}
+    .deco.d2 {
+      top: 14%;
+      right: 8%;
+      font-size: 16px;
+      transform: rotate(10deg);
+    }
 
-  /* photo insert slots */
-  .section-label{
-    font-size:12.5px; font-weight:700; color:var(--brown-soft);
-    margin:18px 0 8px; display:flex; align-items:center; gap:6px;
-  }
-  .section-label::before{content:'📷'; font-size:13px;}
-  .photo-frame{
-    position:relative; width:100%; border-radius:18px; overflow:hidden;
-    background:#FBF3EA; border:2px dashed #E7CDBA;
-    box-shadow:0 4px 14px rgba(107,74,59,0.06);
-  }
-  .photo-frame.vending{height:230px;}
-  .photo-frame img{width:100%; height:100%; object-fit:cover; display:block;}
-  .photo-fallback{
-    position:absolute; inset:0; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:6px; text-align:center;
-    padding:14px; color:var(--brown-soft); font-size:12.5px; line-height:1.5;
-  }
-  .photo-fallback .icon{font-size:26px;}
-  .photo-grid{display:grid; grid-template-columns:1fr; gap:12px;}
-  .photo-grid .photo-frame{height:190px; border-radius:18px;}
-  .photo-grid .photo-fallback{font-size:12.5px; padding:10px;}
-  .photo-grid .photo-fallback .icon{font-size:24px;}
-  .photo-caption{
-    text-align:center; font-size:12px; color:var(--brown-soft); margin-top:-4px;
-  }
+    .deco.d3 {
+      bottom: 10%;
+      left: 9%;
+      font-size: 18px;
+      transform: rotate(8deg);
+    }
 
-  /* trend & case cards */
-  .trend-card, .case-card{
-    background:var(--card); border-radius:18px; padding:16px;
-    box-shadow:0 4px 14px rgba(107,74,59,0.07); margin-top:14px;
-  }
-  .trend-card{border-left:4px solid var(--gold);}
-  .case-card{border-left:4px solid var(--mint-deep);}
-  .card-tag{
-    display:inline-block; font-family:'Jua',sans-serif; font-size:11.5px;
-    padding:4px 10px; border-radius:99px; margin-bottom:8px;
-  }
-  .trend-card .card-tag{background:#FFF3D9; color:#B8860B;}
-  .case-card .card-tag{background:#EAFBF5; color:var(--mint-deep);}
-  .trend-card p, .case-card p{
-    margin:0; font-size:13.5px; line-height:1.7; color:var(--brown);
-  }
-  .case-card .case-title{
-    font-family:'Jua',sans-serif; font-size:14.5px; color:var(--brown);
-    margin:0 0 6px;
-  }
-  .case-card .case-meta{font-size:12px; color:var(--brown-soft); margin-left:6px; font-family:'Gowun Dodum', sans-serif;}
-  .pill{
-    background:var(--mint); color:#22574A; font-size:12.5px; font-weight:700;
-    padding:7px 13px; border-radius:99px;
-  }
+    /* progress header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 20px 10px;
+      background: linear-gradient(180deg, var(--cream) 70%, transparent);
+    }
 
-  /* question options */
-  .options{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
-  .options.grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .opt{
-    background:var(--card);
-    border:2.5px solid #F1E4D8;
-    border-radius:16px;
-    padding:14px 16px;
-    font-size:15px;
-    color:var(--brown);
-    display:flex; align-items:center; gap:10px;
-    cursor:pointer;
-    transition:all .15s ease;
-    user-select:none;
-    line-height:1.4;
-  }
-  .opt .check{
-    flex-shrink:0; width:22px; height:22px; border-radius:7px;
-    border:2.5px solid #E7D6C7; background:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size:13px; color:#fff; transition:all .15s ease;
-  }
-  .opt.circle .check{border-radius:50%;}
-  .opt:active{transform:scale(.98);}
-  .opt.selected{
-    border-color:var(--pink);
-    background:var(--pink-pale);
-  }
-  .opt.selected .check{
-    background:var(--pink); border-color:var(--pink);
-  }
-  .opt.selected .check::after{content:'✓';}
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
 
-  /* priority ranking mode */
-  .options.rank-mode .opt.selected .check::after{
-    content: attr(data-rank);
-    font-size:12px; font-weight:700; font-family:'Jua',sans-serif;
-  }
-  .rank-hint{
-    font-size:12px; color:var(--brown-soft); margin:-4px 0 12px;
-    display:flex; align-items:center; gap:5px;
-  }
-  .rank-hint::before{content:'🐾'; font-size:12px;}
+    .brand {
+      font-family: 'Jua', sans-serif;
+      font-size: 18px;
+      color: var(--pink-deep);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-  .etc-input{
-    margin-top:2px;
-    width:100%;
-    border:2.5px solid #F1E4D8;
-    border-radius:14px;
-    padding:12px 14px;
-    font-size:14.5px;
-    font-family:'Gowun Dodum', sans-serif;
-    color:var(--brown);
-    background:#fff;
-    display:none;
-  }
-  .etc-input:focus{outline:none; border-color:var(--pink);}
-  .etc-input.show{display:block;}
+    .brand .paw {
+      font-size: 16px;
+    }
 
-  .hint-badge{
-    font-size:12px; color:var(--brown-soft); background:#FBF0E6;
-    padding:4px 10px; border-radius:99px; width:fit-content; margin-bottom:12px;
-  }
+    .step-count {
+      font-size: 12px;
+      color: var(--brown-soft);
+      font-weight: 600;
+    }
 
-  /* nav buttons */
-  .nav-row{
-    margin-top:auto;
-    display:flex; gap:10px; padding-top:22px;
-  }
-  .btn{
-    flex:1;
-    border:none;
-    border-radius:16px;
-    padding:15px 16px;
-    font-family:'Jua',sans-serif;
-    font-size:16px;
-    cursor:pointer;
-    transition:transform .12s ease, opacity .12s ease;
-  }
-  .btn:active{transform:scale(.97);}
-  .btn-primary{
-    background:linear-gradient(135deg, var(--pink), var(--pink-deep));
-    color:#fff;
-    box-shadow:0 8px 18px rgba(255,112,152,0.35);
-  }
-  .btn-primary:disabled{opacity:.4; box-shadow:none;}
-  .btn-ghost{
-    background:#fff;
-    color:var(--brown-soft);
-    border:2px solid #F1E4D8;
-    flex:0 0 84px;
-  }
+    .progress-track {
+      height: 10px;
+      background: var(--pink-pale);
+      border-radius: 99px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(107, 74, 59, 0.08);
+    }
 
-  /* landing screen specifics */
-  .landing{align-items:center; text-align:center; padding-top:8px;}
-  .landing .mascot-big{width:170px; margin:4px auto 8px;}
-  .landing h1{font-size:26px;}
-  .start-btn{
-    margin-top:22px; width:100%;
-    background:linear-gradient(135deg, var(--pink), var(--pink-deep));
-    color:#fff; border:none; border-radius:18px; padding:17px;
-    font-family:'Jua',sans-serif; font-size:17px;
-    box-shadow:0 10px 24px rgba(255,112,152,0.4);
-  }
-  .time-note{margin-top:10px; font-size:12.5px; color:var(--brown-soft);}
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--pink));
+      border-radius: 99px;
+      transition: width .45s cubic-bezier(.65, 0, .35, 1);
+      position: relative;
+    }
 
-  /* interview screen */
-  .interview-card{
-    background:var(--card); border-radius:18px; padding:16px;
-    box-shadow:var(--shadow); margin-bottom:14px;
-  }
-  .interview-card ul{margin:8px 0 0; padding-left:20px; font-size:13.5px; color:var(--brown-soft); line-height:1.8;}
-  .interview-card ul li b{color:var(--brown);}
+    .progress-fill::after {
+      content: '🐾';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+    }
 
-  textarea.big-input{
-    width:100%; min-height:90px; resize:vertical;
-    border:2.5px solid #F1E4D8; border-radius:14px; padding:12px 14px;
-    font-family:'Gowun Dodum', sans-serif; font-size:14.5px; color:var(--brown);
-  }
-  textarea.big-input:focus{outline:none; border-color:var(--pink);}
+    main {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .contact-row{display:flex; flex-direction:column; gap:8px; margin-top:14px;}
-  .contact-row input{
-    border:2.5px solid #F1E4D8; border-radius:14px; padding:12px 14px;
-    font-size:14.5px; font-family:'Gowun Dodum', sans-serif; color:var(--brown);
-  }
-  .contact-row input:focus{outline:none; border-color:var(--pink);}
+    .screen {
+      display: none;
+      flex-direction: column;
+      padding: 14px 20px 28px;
+      animation: riseIn .4s cubic-bezier(.2, .8, .2, 1);
+      flex: 1;
+    }
 
-  /* thank you */
-  .thanks{align-items:center; text-align:center; justify-content:center; flex:1;}
-  .thanks img{width:150px; margin-bottom:10px;}
-  .thanks h1{font-size:23px;}
-  .coupon{
-    margin-top:16px; background:var(--card); border-radius:18px; padding:16px;
-    box-shadow:var(--shadow); border:2.5px dashed var(--gold); width:100%;
-  }
-  .coupon b{color:var(--pink-deep); font-family:'Jua',sans-serif;}
+    .screen.active {
+      display: flex;
+    }
 
-  ::selection{background:var(--pink-pale);}
-</style>
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1.headline {
+      font-family: 'Jua', sans-serif;
+      font-size: 24px;
+      line-height: 1.4;
+      color: var(--brown);
+      margin: 6px 0 4px;
+    }
+
+    p.sub {
+      font-size: 14.5px;
+      color: var(--brown-soft);
+      line-height: 1.6;
+      margin: 0 0 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--mint-deep);
+      background: #EAFBF5;
+      padding: 5px 12px;
+      border-radius: 99px;
+      width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    /* Hook screen - image choice */
+    .choice-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .choice-card {
+      flex: 1;
+      background: var(--card);
+      border-radius: 22px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+      border: 3px solid transparent;
+      text-align: center;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .choice-card:active {
+      transform: scale(.96);
+    }
+
+    .choice-card.selected {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 6px var(--pink-pale), var(--shadow);
+    }
+
+    .choice-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+      background: #FBF3EA;
+    }
+
+    .choice-label {
+      margin-top: 8px;
+      font-family: 'Jua', sans-serif;
+      font-size: 14px;
+      color: var(--brown);
+    }
+
+    /* concept screen */
+    .concept-hero {
+      display: flex;
+      justify-content: center;
+      margin: 6px 0 14px;
+    }
+
+    .concept-hero img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 6px 0 18px;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 4px 14px rgba(107, 74, 59, 0.07);
+    }
+
+    .flow-num {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--pink-pale);
+      color: var(--pink-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Jua', sans-serif;
+      font-size: 15px;
+    }
+
+    .flow-text b {
+      display: block;
+      font-size: 14.5px;
+      color: var(--brown);
+      margin-bottom: 1px;
+    }
+
+    .flow-text span {
+      font-size: 12.5px;
+      color: var(--brown-soft);
+    }
+
+    .product-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    /* photo insert slots */
+    .section-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brown-soft);
+      margin: 18px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-label::before {
+      content: '📷';
+      font-size: 13px;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #FBF3EA;
+      border: 2px dashed #E7CDBA;
+      box-shadow: 0 4px 14px rgba(107, 74, 59, 0.06);
+    }
+
+    .photo-frame.vending {
+      height: 300px;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      padding: 14px;
+      color: var(--brown-soft);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .photo-fallback .icon {
+      font-size: 26px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .photo-grid .photo-frame {
+      height: 230px;
+      border-radius: 18px;
+    }
+
+    .photo-grid .photo-fallback {
+      font-size: 12.5px;
+      padding: 10px;
+    }
+
+    .photo-grid .photo-fallback .icon {
+      font-size: 24px;
+    }
+
+    .photo-caption {
+      text-align: center;
+      font-size: 12px;
+      color: var(--brown-soft);
+      margin-top: -4px;
+    }
+
+    /* trend & case cards */
+    .trend-card,
+    .case-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(107, 74, 59, 0.07);
+      margin-top: 14px;
+    }
+
+    .trend-card {
+      border-left: 4px solid var(--gold);
+    }
+
+    .case-card {
+      border-left: 4px solid var(--mint-deep);
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: 'Jua', sans-serif;
+      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      margin-bottom: 8px;
+    }
+
+    .trend-card .card-tag {
+      background: #FFF3D9;
+      color: #B8860B;
+    }
+
+    .case-card .card-tag {
+      background: #EAFBF5;
+      color: var(--mint-deep);
+    }
+
+    .trend-card p,
+    .case-card p {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--brown);
+    }
+
+    .case-card .case-title {
+      font-family: 'Jua', sans-serif;
+      font-size: 14.5px;
+      color: var(--brown);
+      margin: 0 0 6px;
+    }
+
+    .case-card .case-meta {
+      font-size: 12px;
+      color: var(--brown-soft);
+      margin-left: 6px;
+      font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    .pill {
+      background: var(--mint);
+      color: #22574A;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 13px;
+      border-radius: 99px;
+    }
+
+    /* question options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .options.grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .opt {
+      background: var(--card);
+      border: 2.5px solid #F1E4D8;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all .15s ease;
+      user-select: none;
+      line-height: 1.4;
+    }
+
+    .opt .check {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      border: 2.5px solid #E7D6C7;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #fff;
+      transition: all .15s ease;
+    }
+
+    .opt.circle .check {
+      border-radius: 50%;
+    }
+
+    .opt:active {
+      transform: scale(.98);
+    }
+
+    .opt.selected {
+      border-color: var(--pink);
+      background: var(--pink-pale);
+    }
+
+    .opt.selected .check {
+      background: var(--pink);
+      border-color: var(--pink);
+    }
+
+    .opt.selected .check::after {
+      content: '✓';
+    }
+
+    /* priority ranking mode */
+    .options.rank-mode .opt.selected .check::after {
+      content: attr(data-rank);
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Jua', sans-serif;
+    }
+
+    .rank-hint {
+      font-size: 12px;
+      color: var(--brown-soft);
+      margin: -4px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .rank-hint::before {
+      content: '🐾';
+      font-size: 12px;
+    }
+
+    .etc-input {
+      margin-top: 2px;
+      width: 100%;
+      border: 2.5px solid #F1E4D8;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-family: 'Gowun Dodum', sans-serif;
+      color: var(--brown);
+      background: #fff;
+      display: none;
+    }
+
+    .etc-input:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+
+    .etc-input.show {
+      display: block;
+    }
+
+    .hint-badge {
+      font-size: 12px;
+      color: var(--brown-soft);
+      background: #FBF0E6;
+      padding: 4px 10px;
+      border-radius: 99px;
+      width: fit-content;
+      margin-bottom: 12px;
+    }
+
+    /* nav buttons */
+    .nav-row {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      padding-top: 22px;
+    }
+
+    .btn {
+      flex: 1;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 16px;
+      font-family: 'Jua', sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+
+    .btn:active {
+      transform: scale(.97);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(255, 112, 152, 0.35);
+    }
+
+    .btn-primary:disabled {
+      opacity: .4;
+      box-shadow: none;
+    }
+
+    .btn-ghost {
+      background: #fff;
+      color: var(--brown-soft);
+      border: 2px solid #F1E4D8;
+      flex: 0 0 84px;
+    }
+
+    /* landing screen specifics */
+    .landing {
+      align-items: center;
+      text-align: center;
+      padding-top: 8px;
+    }
+
+    .landing .mascot-big {
+      width: 170px;
+      margin: 4px auto 8px;
+    }
+
+    .landing h1 {
+      font-size: 26px;
+    }
+
+    .start-btn {
+      margin-top: 22px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+      color: #fff;
+      border: none;
+      border-radius: 18px;
+      padding: 17px;
+      font-family: 'Jua', sans-serif;
+      font-size: 17px;
+      box-shadow: 0 10px 24px rgba(255, 112, 152, 0.4);
+    }
+
+    .time-note {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: var(--brown-soft);
+    }
+
+    /* interview screen */
+    .interview-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .interview-card ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      font-size: 13.5px;
+      color: var(--brown-soft);
+      line-height: 1.8;
+    }
+
+    .interview-card ul li b {
+      color: var(--brown);
+    }
+
+    textarea.big-input {
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      border: 2.5px solid #F1E4D8;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-family: 'Gowun Dodum', sans-serif;
+      font-size: 14.5px;
+      color: var(--brown);
+    }
+
+    textarea.big-input:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .contact-row input {
+      border: 2.5px solid #F1E4D8;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-family: 'Gowun Dodum', sans-serif;
+      color: var(--brown);
+    }
+
+    .contact-row input:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+
+    /* thank you */
+    .thanks {
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .thanks img {
+      width: 150px;
+      margin-bottom: 10px;
+    }
+
+    .thanks h1 {
+      font-size: 23px;
+    }
+
+    .coupon {
+      margin-top: 16px;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      border: 2.5px dashed var(--gold);
+      width: 100%;
+    }
+
+    .coupon b {
+      color: var(--pink-deep);
+      font-family: 'Jua', sans-serif;
+    }
+
+    ::selection {
+      background: var(--pink-pale);
+    }
+  </style>
 </head>
+
 <body>
 
-<span class="deco d1">✨</span>
-<span class="deco d2">🩷</span>
-<span class="deco d3">⭐</span>
+  <span class="deco d1">✨</span>
+  <span class="deco d2">🩷</span>
+  <span class="deco d3">⭐</span>
 
-<div class="app">
+  <div class="app">
 
-  <div class="topbar" id="topbar" style="display:none;">
-    <div class="brand-row">
-      <div class="brand"><span class="paw">🐾</span>커스터 굿즈자판기</div>
-      <div class="step-count" id="stepCount">1 / 8</div>
+    <div class="topbar" id="topbar" style="display:none;">
+      <div class="brand-row">
+        <div class="brand"><span class="paw">🐾</span>커스텀 굿즈자판기</div>
+        <div class="step-count" id="stepCount">1 / 8</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    햣
+    <main>
+
+      <!-- Screen 0 : Landing hook -->
+      <section class="screen active landing" data-screen="0">
+        <div class="eyebrow" style="margin:0 auto 4px;">🐾 잠깐! 10초만 시간 내주세요</div>
+        <img class="mascot-big" src="images/main_logo.png" alt="뇨미 캐릭터">
+        <h1 class="headline">어느 쪽이 더 귀엽나요?</h1>
+        <p class="sub">요즘 유행하고 있는 귀요미 제품들이에요.<br>더 귀여운 것을 골라주세요!</p>
+        <div class="choice-row">
+          <div class="choice-card" data-choice="1" onclick="selectCharacter(this,'1')">
+            <img src="images/main1.jpeg" alt="인형 키링">
+            <div class="choice-label">인형 키링</div>
+          </div>
+          <div class="choice-card" data-choice="2" onclick="selectCharacter(this,'2')">
+            <img src="images/main2.jpeg" alt="말랑이">
+            <div class="choice-label">말랑이</div>
+          </div>
+        </div>
+        <div class="choice-row">
+          <div class="choice-card" data-choice="1" onclick="selectCharacter(this,'1')">
+            <img src="images/main3.jpeg" alt="키캡">
+            <div class="choice-label">키캡</div>
+          </div>
+          <div class="choice-card" data-choice="2" onclick="selectCharacter(this,'2')">
+            <img src="images/main4.jpeg" alt="행운 거북이">
+            <div class="choice-label">행운 거북이</div>
+          </div>
+        </div>
+        <div class="choice-row">
+          <div class="choice-card" data-choice="1" onclick="selectCharacter(this,'1')">
+            <img src="images/main5.jpeg" alt="키캡">
+            <div class="choice-label">텀블러</div>
+          </div>
+          <div class="choice-card" data-choice="2" onclick="selectCharacter(this,'2')">
+            <img src="images/main6.jpeg" alt="행운 거북이">
+            <div class="choice-label">케이스</div>
+          </div>
+        </div>
+        <button class="start-btn" id="landingNext" disabled onclick="goTo(1)">골랐어요, 다음으로 🐾</button>
+        <div class="time-note">설문은 약 1분 정도 걸려요</div>
+      </section>
+
+      <!-- Screen 1 : Concept intro -->
+      <section class="screen" data-screen="1">
+        <div class="eyebrow">🐾 굿즈 자판기가 뭐냐면요</div>
+        <h1 class="headline" style="text-align:center;">순간을 들려주면,<br>굿즈로 만들어줘요</h1>
+        <p class="sub" style="text-align:center;">부스에 들어가서 소중한 추억과 그때 느낀 감정을 이야기하면, AI가 그 순간을 이미지로 그려주고 원하는 굿즈에 담아드려요.
+        </p>
+
+        <div class="section-label">부스 사진</div>
+        <div class="photo-frame vending">
+          <img src="images/goods.png" alt="추억멍 부스 사진"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        </div>
+
+        <div class="trend-card">
+          <span class="card-tag">TREND KOREA</span>
+          <p>최근 트렌드코리아를 비롯한 여러 소비 트렌드 리포트에서 '레트로' 감성이 꾸준히 핵심 키워드로 꼽히고 있어요. 스마트폰 사진첩보다 손에 잡히는 물건, 필름 카메라, 자판기 같은 아날로그
+            경험에서 사람들은 오히려 특별함을 느끼고 있죠. 추억멍은 이 흐름 위에서, 나만의 기억을 만질 수 있는 형태로 남기는 경험을 제안해요.</p>
+        </div>
+
+        <div class="case-card">
+          <span class="card-tag">참고 사례</span>
+          <p class="case-title">마음약방 <span class="case-meta">서울문화재단 · 2015~2020</span></p>
+          <p>자판기에 500원을 넣으면 그날의 감정에 맞는 시, 그림, 작은 위로 물품이 처방전처럼 나오는 캠페인이었어요. 5년간 11만 명 넘는 시민이 이용했고 칸 국제광고제에서도 수상했죠. 사람들은
+            이미 '감정을 물성 있는 형태로 받는 경험'에 크게 반응한 적이 있어요.</p>
+        </div>
+
+        <div class="flow-steps" style="margin-top:16px;">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <div class="flow-text"><b>부스 입장</b><span>추억과 감정을 편하게 이야기해요</span></div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <div class="flow-text"><b>AI가 이미지 생성</b><span>그 순간을 나만의 그림으로 만들어줘요</span></div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <div class="flow-text"><b>굿즈로 완성</b><span>원하는 제품에 담아 바로 받아가요</span></div>
+          </div>
+        </div>
+
+        <div class="section-label">커스텀 굿즈 예시</div>
+        <div class="photo-grid">
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample1.jpeg" alt="커스텀 굿즈 예시1 - 폰케이스"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample2.jpeg" alt="커스텀 굿즈 예시2 - 볼펜"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample3.jpeg" alt="커스텀 굿즈 예시3 - 텀블러"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo(0)">이전</button>
+          <button class="btn btn-primary" onclick="goTo(2)">궁금해요, 다음! →</button>
+        </div>
+      </section>
+
+
+      <!-- Screen 2 : Q2 multi + etc -->
+      <section class="screen" data-screen="2">
+        <div class="hint-badge">질문 1 · 중복 선택 가능</div>
+        <h1 class="headline">내가 추억을 간직하는 방식은?</h1>
+        <div class="options" id="q2opts">
+          <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>액자</div>
+          <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>커스텀 소품 (폰케이스, 키링 등)</div>
+          <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>휴대폰 사진</div>
+          <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>일기</div>
+          <div class="opt" onclick="toggleMulti(this,'q2', true)"><span class="check"></span>기타</div>
+        </div>
+        <input type="text" class="etc-input" id="q2etc" placeholder="직접 입력해주세요">
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo(1)">이전</button>
+          <button class="btn btn-primary" id="q2next" disabled onclick="goTo(3)">다음</button>
+        </div>
+      </section>
+
+      <!-- Screen 3 : Q3 priority ranking -->
+      <section class="screen" data-screen="3">
+        <div class="hint-badge">질문 2 · 우선순위 선택</div>
+        <h1 class="headline">주로 동성로는<br>어떤 일로 오시나요?</h1>
+        <p class="rank-hint">중요한 순서대로 눌러주세요, 번호가 자동으로 매겨져요</p>
+        <div class="options rank-mode" id="q3opts">
+          <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>여행</div>
+          <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>학원</div>
+          <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>쇼핑</div>
+          <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>직장</div>
+          <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>취미</div>
+          <div class="opt circle" onclick="toggleRank(this,'q3', true)"><span class="check"></span>기타</div>
+        </div>
+        <input type="text" class="etc-input" id="q3etc" placeholder="직접 입력해주세요">
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo(2)">이전</button>
+          <button class="btn btn-primary" id="q3next" disabled onclick="goTo(4)">다음</button>
+        </div>
+      </section>
+
+      <!-- Screen 4 : Q4 priority ranking -->
+      <section class="screen" data-screen="4">
+        <div class="hint-badge">질문 3 · 우선순위 선택</div>
+        <h1 class="headline">굿즈 자판기가 생긴다면<br>어디에 있으면 좋을까요?</h1>
+        <p class="rank-hint">중요한 순서대로 눌러주세요, 번호가 자동으로 매겨져요</p>
+        <div class="options rank-mode" id="q4opts">
+          <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>동네 근처</div>
+          <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>대학교</div>
+          <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>직장 근처</div>
+          <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>지하철역</div>
+          <div class="opt circle" onclick="toggleRank(this,'q4', true)"><span class="check"></span>기타</div>
+        </div>
+        <input type="text" class="etc-input" id="q4etc" placeholder="직접 입력해주세요">
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo(3)">이전</button>
+          <button class="btn btn-primary" id="q4next" disabled onclick="goTo(5)">다음</button>
+        </div>
+      </section>
+
+      <!-- Screen 5 : Follow-up interview invite -->
+      <section class="screen" data-screen="5">
+        <div class="eyebrow">🐾 마지막 질문이에요</div>
+        <h1 class="headline">직접 체험하고<br>후기를 남겨주세요!</h1>
+        <div class="interview-card">
+          <p class="sub" style="margin:0;">AI가 몇 가지 질문을 드리고, 답변을 바탕으로 추억을 이미지로 만들어드려요. 완성된 이미지가 원하는 느낌인지 짧게 후기만 남겨주시면
+            돼요.</p>
+          <ul>
+            <li><b>질문 예시</b> 그 순간은 언제, 어디였나요? / 어떤 감정이 가장 컸나요? / 그 장면에서 가장 기억나는 색이나 소리는?</li>
+            <li><b>참여 혜택</b> 완성된 이미지 + 미니 굿즈 증정</li>
+          </ul>
+        </div>
+
+        <div class="section-label">참여하면 이런 굿즈를 받아가요</div>
+        <div class="photo-grid">
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample4.jpeg" alt="완성 예시1 - 여행 순간 폰케이스"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample5.jpeg" alt="완성 예시2 - 합격 순간 텀블러"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample6.jpeg" alt="완성 예시3 - 첫 만남 키링"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample7.jpeg" alt="완성 예시4 - 우정 볼펜"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+          <div>
+            <div class="photo-frame">
+              <img src="images/sample8.jpeg" alt="완성 예시5 - 가족 여행 엽서"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo(4)">이전</button>
+          <button class="btn btn-primary" id="q6next" disabled onclick="finishSurvey()">끝! 🐾</button>
+        </div>
+      </section>
+
+      <!-- Screen 6 : Thanks -->
+      <section class="screen thanks" data-screen="6">
+        <img src="images/character1.png" alt="고마워요">
+        <h1 class="headline">참여해주셔서<br>정말 고마워요! 🩷</h1>
+        <p class="sub">덕분에 추억멍이 한 걸음 더<br>귀여워질 수 있을 것 같아요.</p>
+        <div class="coupon">
+          <b>🎁 안내</b><br>
+          <span style="font-size:13.5px; color:#6B4A3B;">참여해주신 내용은 제품 개발에만 사용되며, 인터뷰 신청자에게는 별도로 연락드릴게요.</span>
+        </div>
+      </section>
+
+    </main>
   </div>
 
-  <main>
+  <script>
+    const state = {
+      character: null,
+      q2: null, q2etc: '',
+      q3: [], q3etc: '',
+      q4: [], q4etc: '',
+      q6: null, name: '', phone: ''
+    };
+    const totalSteps = 5; // steps 1~5 shown in progress (0 is hook, excluded from bar)
 
-    <!-- Screen 0 : Landing hook -->
-    <section class="screen active landing" data-screen="0">
-      <div class="eyebrow" style="margin:0 auto 4px;">🐾 잠깐! 10초만 시간 내주세요</div>
-      <img class="mascot-big" src="images/nyum1.png" alt="추억멍 캐릭터">
-      <h1 class="headline">어느 쪽이 더 귀엽나요?</h1>
-      <p class="sub">저희가 만들고 있는 캐릭터예요.<br>솔직한 취향을 골라주세요!</p>
-      <div class="choice-row">
-        <div class="choice-card" data-choice="1" onclick="selectCharacter(this,'1')">
-          <img src="images/nyum1.png" alt="이미지1 - 다양한 포즈">
-          <div class="choice-label">이미지 1</div>
-        </div>
-        <div class="choice-card" data-choice="2" onclick="selectCharacter(this,'2')">
-          <img src="images/nyum2.png" alt="이미지2 - 쿠키 먹는 모습">
-          <div class="choice-label">이미지 2</div>
-        </div>
-      </div>
-      <button class="start-btn" id="landingNext" disabled onclick="goTo(1)">골랐어요, 다음으로 🐾</button>
-      <div class="time-note">설문은 약 1분 정도 걸려요</div>
-    </section>
-
-    <!-- Screen 1 : Concept intro -->
-    <section class="screen" data-screen="1">
-      <div class="eyebrow">🐾 굿즈 자판기가 뭐냐면요</div>
-      <h1 class="headline" style="text-align:center;">순간을 들려주면,<br>굿즈로 만들어줘요</h1>
-      <p class="sub" style="text-align:center;">부스에 들어가서 소중한 추억과 그때 느낀 감정을 이야기하면, AI가 그 순간을 이미지로 그려주고 원하는 굿즈에 담아드려요.</p>
-
-      <div class="section-label">감성적인 부스 사진</div>
-      <div class="photo-frame vending">
-        <img src="images/goods.JPG" alt="추억멍 부스 사진" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      </div>
-
-      <div class="trend-card">
-        <span class="card-tag">TREND KOREA</span>
-        <p>최근 트렌드코리아를 비롯한 여러 소비 트렌드 리포트에서 '레트로' 감성이 꾸준히 핵심 키워드로 꼽히고 있어요. 스마트폰 사진첩보다 손에 잡히는 물건, 필름 카메라, 자판기 같은 아날로그 경험에서 사람들은 오히려 특별함을 느끼고 있죠. 추억멍은 이 흐름 위에서, 나만의 기억을 만질 수 있는 형태로 남기는 경험을 제안해요.</p>
-      </div>
-
-      <div class="case-card">
-        <span class="card-tag">참고 사례</span>
-        <p class="case-title">마음약방 <span class="case-meta">서울문화재단 · 2015~2020</span></p>
-        <p>자판기에 500원을 넣으면 그날의 감정에 맞는 시, 그림, 작은 위로 물품이 처방전처럼 나오는 캠페인이었어요. 5년간 11만 명 넘는 시민이 이용했고 칸 국제광고제에서도 수상했죠. 사람들은 이미 '감정을 물성 있는 형태로 받는 경험'에 크게 반응한 적이 있어요.</p>
-      </div>
-
-      <div class="flow-steps" style="margin-top:16px;">
-        <div class="flow-step">
-          <div class="flow-num">1</div>
-          <div class="flow-text"><b>부스 입장</b><span>추억과 감정을 편하게 이야기해요</span></div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">2</div>
-          <div class="flow-text"><b>AI가 이미지 생성</b><span>그 순간을 나만의 그림으로 만들어줘요</span></div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">3</div>
-          <div class="flow-text"><b>굿즈로 완성</b><span>원하는 제품에 담아 바로 받아가요</span></div>
-        </div>
-      </div>
-
-      <div class="section-label">커스텀 굿즈 예시</div>
-      <div class="photo-grid">
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample1.jpeg" alt="커스텀 굿즈 예시1 - 폰케이스" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample2.jpeg" alt="커스텀 굿즈 예시2 - 볼펜" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample3.jpeg" alt="커스텀 굿즈 예시3 - 텀블러" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-      </div>
-
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(0)">이전</button>
-        <button class="btn btn-primary" onclick="goTo(2)">궁금해요, 다음! →</button>
-      </div>
-    </section>
-
-
-    <!-- Screen 2 : Q2 multi + etc -->
-    <section class="screen" data-screen="2">
-      <div class="hint-badge">질문 1 · 중복 선택 가능</div>
-      <h1 class="headline">내가 추억을 간직하는 방식은?</h1>
-      <div class="options" id="q2opts">
-        <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>액자</div>
-        <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>커스텀 소품 (폰케이스, 키링 등)</div>
-        <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>휴대폰 사진</div>
-        <div class="opt" onclick="toggleMulti(this,'q2')"><span class="check"></span>일기</div>
-        <div class="opt" onclick="toggleMulti(this,'q2', true)"><span class="check"></span>기타</div>
-      </div>
-      <input type="text" class="etc-input" id="q2etc" placeholder="직접 입력해주세요">
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(1)">이전</button>
-        <button class="btn btn-primary" id="q2next" disabled onclick="goTo(3)">다음</button>
-      </div>
-    </section>
-
-    <!-- Screen 3 : Q3 priority ranking -->
-    <section class="screen" data-screen="3">
-      <div class="hint-badge">질문 2 · 우선순위 선택</div>
-      <h1 class="headline">주로 동성로는<br>어떤 일로 오시나요?</h1>
-      <p class="rank-hint">중요한 순서대로 눌러주세요, 번호가 자동으로 매겨져요</p>
-      <div class="options rank-mode" id="q3opts">
-        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>여행</div>
-        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>학원</div>
-        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>쇼핑</div>
-        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>직장</div>
-        <div class="opt circle" onclick="toggleRank(this,'q3')"><span class="check"></span>취미</div>
-        <div class="opt circle" onclick="toggleRank(this,'q3', true)"><span class="check"></span>기타</div>
-      </div>
-      <input type="text" class="etc-input" id="q3etc" placeholder="직접 입력해주세요">
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(2)">이전</button>
-        <button class="btn btn-primary" id="q3next" disabled onclick="goTo(4)">다음</button>
-      </div>
-    </section>
-
-    <!-- Screen 4 : Q4 priority ranking -->
-    <section class="screen" data-screen="4">
-      <div class="hint-badge">질문 3 · 우선순위 선택</div>
-      <h1 class="headline">굿즈 자판기가 생긴다면<br>어디에 있으면 좋을까요?</h1>
-      <p class="rank-hint">중요한 순서대로 눌러주세요, 번호가 자동으로 매겨져요</p>
-      <div class="options rank-mode" id="q4opts">
-                <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>동네 근처</div>
-        <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>대학교</div>
-        <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>직장 근처</div>
-        <div class="opt circle" onclick="toggleRank(this,'q4')"><span class="check"></span>지하철역</div>
-        <div class="opt circle" onclick="toggleRank(this,'q4', true)"><span class="check"></span>기타</div>
-      </div>
-      <input type="text" class="etc-input" id="q4etc" placeholder="직접 입력해주세요">
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(3)">이전</button>
-        <button class="btn btn-primary" id="q4next" disabled onclick="goTo(5)">다음</button>
-      </div>
-    </section>
-
-    <!-- Screen 5 : Follow-up interview invite -->
-    <section class="screen" data-screen="5">
-      <div class="eyebrow">🐾 마지막 질문이에요</div>
-      <h1 class="headline">직접 체험하고<br>후기를 남겨주세요!</h1>
-      <div class="interview-card">
-        <p class="sub" style="margin:0;">AI가 몇 가지 질문을 드리고, 답변을 바탕으로 추억을 이미지로 만들어드려요. 완성된 이미지가 원하는 느낌인지 짧게 후기만 남겨주시면 돼요.</p>
-        <ul>
-          <li><b>질문 예시</b> 그 순간은 언제, 어디였나요? / 어떤 감정이 가장 컸나요? / 그 장면에서 가장 기억나는 색이나 소리는?</li>
-          <li><b>참여 혜택</b> 완성된 이미지 + 미니 굿즈 증정</li>
-        </ul>
-      </div>
-
-      <div class="section-label">참여하면 이런 굿즈를 받아가요</div>
-      <div class="photo-grid">
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample4.jpeg" alt="완성 예시1 - 여행 순간 폰케이스" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample5.jpeg" alt="완성 예시2 - 합격 순간 텀블러" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample6.jpeg" alt="완성 예시3 - 첫 만남 키링" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample7.jpeg" alt="완성 예시4 - 우정 볼펜" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-        <div>
-          <div class="photo-frame">
-            <img src="images/sample8.jpeg" alt="완성 예시5 - 가족 여행 엽서" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          </div>
-        </div>
-      </div>
-
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goTo(4)">이전</button>
-        <button class="btn btn-primary" id="q6next" disabled onclick="finishSurvey()">끝! 🐾</button>
-      </div>
-    </section>
-
-    <!-- Screen 6 : Thanks -->
-    <section class="screen thanks" data-screen="6">
-      <img src="images/character1.png" alt="고마워요">
-      <h1 class="headline">참여해주셔서<br>정말 고마워요! 🩷</h1>
-      <p class="sub">덕분에 추억멍이 한 걸음 더<br>귀여워질 수 있을 것 같아요.</p>
-      <div class="coupon">
-        <b>🎁 안내</b><br>
-        <span style="font-size:13.5px; color:#6B4A3B;">참여해주신 내용은 제품 개발에만 사용되며, 인터뷰 신청자에게는 별도로 연락드릴게요.</span>
-      </div>
-    </section>
-
-  </main>
-</div>
-
-<script>
-  const state = {
-    character: null,
-    q2: null, q2etc:'',
-    q3: [], q3etc:'',
-    q4: [], q4etc:'',
-    q6: null, name:'', phone:''
-  };
-  const totalSteps = 5; // steps 1~5 shown in progress (0 is hook, excluded from bar)
-
-  function showTopbar(step){
-    const topbar = document.getElementById('topbar');
-    if(step === 0 || step === 6){ topbar.style.display = 'none'; return; }
-    topbar.style.display = 'block';
-    const pct = Math.round((step / totalSteps) * 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('stepCount').textContent = step + ' / ' + totalSteps;
-  }
-
-  function goTo(step){
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.querySelector('.screen[data-screen="'+step+'"]').classList.add('active');
-    showTopbar(step);
-    window.scrollTo(0,0);
-  }
-
-  function selectCharacter(el, val){
-    document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    state.character = val;
-    document.getElementById('landingNext').disabled = false;
-  }
-
-  function selectSingle(el, key, isEtc){
-    const group = el.parentElement;
-    group.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    state[key] = el.textContent.trim();
-    const etcInput = document.getElementById(key+'etc');
-    if(etcInput){
-      if(isEtc){
-        etcInput.classList.add('show');
-        etcInput.focus();
-      } else {
-        etcInput.classList.remove('show');
-        etcInput.value = '';
-      }
+    function showTopbar(step) {
+      const topbar = document.getElementById('topbar');
+      if (step === 0 || step === 6) { topbar.style.display = 'none'; return; }
+      topbar.style.display = 'block';
+      const pct = Math.round((step / totalSteps) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('stepCount').textContent = step + ' / ' + totalSteps;
     }
-    const nextBtn = document.getElementById(key+'next');
-    if(nextBtn) nextBtn.disabled = false;
-    if(key === 'q6'){
-      document.getElementById('contactRow').style.display = (el.textContent.trim() === '네, 참여할게요!') ? 'flex' : 'none';
+
+    function goTo(step) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelector('.screen[data-screen="' + step + '"]').classList.add('active');
+      showTopbar(step);
+      window.scrollTo(0, 0);
     }
-  }
 
-  function toggleMulti(el, key, isEtc){
-    el.classList.toggle('selected');
-    const group = el.parentElement;
-    const selectedTexts = Array.from(group.querySelectorAll('.opt.selected')).map(o => o.textContent.trim());
-    state[key] = selectedTexts;
-    const etcInput = document.getElementById(key+'etc');
-    if(etcInput){
-      const etcSelected = el.classList.contains('selected') && isEtc;
-      const anyEtcSelected = Array.from(group.querySelectorAll('.opt.selected')).some(o => o.textContent.trim() === '기타');
-      if(anyEtcSelected){
-        etcInput.classList.add('show');
-      } else {
-        etcInput.classList.remove('show');
-        etcInput.value = '';
-      }
-    }
-    const nextBtn = document.getElementById(key+'next');
-    if(nextBtn) nextBtn.disabled = selectedTexts.length === 0;
-  }
-
-  function toggleRank(el, key, isEtc){
-    const group = el.parentElement;
-    const checkEl = el.querySelector('.check');
-
-    if(el.classList.contains('selected')){
-      const removedRank = parseInt(checkEl.dataset.rank, 10);
-      el.classList.remove('selected');
-      delete checkEl.dataset.rank;
-      group.querySelectorAll('.opt.selected').forEach(o=>{
-        const oCheck = o.querySelector('.check');
-        const r = parseInt(oCheck.dataset.rank, 10);
-        if(r > removedRank){ oCheck.dataset.rank = r - 1; }
-      });
-    } else {
-      const currentCount = group.querySelectorAll('.opt.selected').length;
+    function selectCharacter(el, val) {
+      document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
-      checkEl.dataset.rank = currentCount + 1;
+      state.character = val;
+      document.getElementById('landingNext').disabled = false;
     }
 
-    const ranked = Array.from(group.querySelectorAll('.opt.selected'))
-      .sort((a,b) => parseInt(a.querySelector('.check').dataset.rank,10) - parseInt(b.querySelector('.check').dataset.rank,10))
-      .map(o => o.textContent.trim());
-    state[key] = ranked;
-
-    const etcInput = document.getElementById(key+'etc');
-    if(etcInput){
-      const anyEtcSelected = ranked.includes('기타');
-      if(anyEtcSelected){
-        etcInput.classList.add('show');
-      } else {
-        etcInput.classList.remove('show');
-        etcInput.value = '';
+    function selectSingle(el, key, isEtc) {
+      const group = el.parentElement;
+      group.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      state[key] = el.textContent.trim();
+      const etcInput = document.getElementById(key + 'etc');
+      if (etcInput) {
+        if (isEtc) {
+          etcInput.classList.add('show');
+          etcInput.focus();
+        } else {
+          etcInput.classList.remove('show');
+          etcInput.value = '';
+        }
+      }
+      const nextBtn = document.getElementById(key + 'next');
+      if (nextBtn) nextBtn.disabled = false;
+      if (key === 'q6') {
+        document.getElementById('contactRow').style.display = (el.textContent.trim() === '네, 참여할게요!') ? 'flex' : 'none';
       }
     }
-    const nextBtn = document.getElementById(key+'next');
-    if(nextBtn) nextBtn.disabled = ranked.length === 0;
-  }
 
-  ['q2','q3','q4'].forEach(key=>{
-    const input = document.getElementById(key+'etc');
-    if(input){
-      input.addEventListener('input', ()=>{ state[key+'etc'] = input.value; });
+    function toggleMulti(el, key, isEtc) {
+      el.classList.toggle('selected');
+      const group = el.parentElement;
+      const selectedTexts = Array.from(group.querySelectorAll('.opt.selected')).map(o => o.textContent.trim());
+      state[key] = selectedTexts;
+      const etcInput = document.getElementById(key + 'etc');
+      if (etcInput) {
+        const etcSelected = el.classList.contains('selected') && isEtc;
+        const anyEtcSelected = Array.from(group.querySelectorAll('.opt.selected')).some(o => o.textContent.trim() === '기타');
+        if (anyEtcSelected) {
+          etcInput.classList.add('show');
+        } else {
+          etcInput.classList.remove('show');
+          etcInput.value = '';
+        }
+      }
+      const nextBtn = document.getElementById(key + 'next');
+      if (nextBtn) nextBtn.disabled = selectedTexts.length === 0;
     }
-  });
-  document.getElementById('contactName').addEventListener('input', e=>{ state.name = e.target.value; });
-  document.getElementById('contactPhone').addEventListener('input', e=>{ state.phone = e.target.value; });
 
-  function finishSurvey(){
-    console.log('추억멍 설문 결과', JSON.stringify(state, null, 2));
-    goTo(6);
-  }
-</script>
+    function toggleRank(el, key, isEtc) {
+      const group = el.parentElement;
+      const checkEl = el.querySelector('.check');
+
+      if (el.classList.contains('selected')) {
+        const removedRank = parseInt(checkEl.dataset.rank, 10);
+        el.classList.remove('selected');
+        delete checkEl.dataset.rank;
+        group.querySelectorAll('.opt.selected').forEach(o => {
+          const oCheck = o.querySelector('.check');
+          const r = parseInt(oCheck.dataset.rank, 10);
+          if (r > removedRank) { oCheck.dataset.rank = r - 1; }
+        });
+      } else {
+        const currentCount = group.querySelectorAll('.opt.selected').length;
+        el.classList.add('selected');
+        checkEl.dataset.rank = currentCount + 1;
+      }
+
+      const ranked = Array.from(group.querySelectorAll('.opt.selected'))
+        .sort((a, b) => parseInt(a.querySelector('.check').dataset.rank, 10) - parseInt(b.querySelector('.check').dataset.rank, 10))
+        .map(o => o.textContent.trim());
+      state[key] = ranked;
+
+      const etcInput = document.getElementById(key + 'etc');
+      if (etcInput) {
+        const anyEtcSelected = ranked.includes('기타');
+        if (anyEtcSelected) {
+          etcInput.classList.add('show');
+        } else {
+          etcInput.classList.remove('show');
+          etcInput.value = '';
+        }
+      }
+      const nextBtn = document.getElementById(key + 'next');
+      if (nextBtn) nextBtn.disabled = ranked.length === 0;
+    }
+
+    ['q2', 'q3', 'q4'].forEach(key => {
+      const input = document.getElementById(key + 'etc');
+      if (input) {
+        input.addEventListener('input', () => { state[key + 'etc'] = input.value; });
+      }
+    });
+    document.getElementById('contactName').addEventListener('input', e => { state.name = e.target.value; });
+    document.getElementById('contactPhone').addEventListener('input', e => { state.phone = e.target.value; });
+
+    function finishSurvey() {
+      console.log('추억멍 설문 결과', JSON.stringify(state, null, 2));
+      goTo(6);
+    }
+  </script>
 </body>
+
 </html>
