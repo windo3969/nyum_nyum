@@ -11,6 +11,10 @@
   교체 방법: images 폴더 안에 위 파일명 그대로 사진을 넣으면 자동으로 표시됩니다.
   사진이 없으면 점선 테두리의 안내 문구가 대신 보여요.
   다른 형식(png, jpg 등)을 쓰고 싶다면, 아래 <img> 태그의 src 확장자도 함께 바꿔주세요.
+
+  스토리 텍스트 교체 안내
+  "커스텀 굿즈 예시" 섹션의 각 사진 아래 goods-example-story 클래스 <p> 태그에
+  예시 스토리를 적어뒀습니다. 다른 문구로 바꾸고 싶다면 해당 텍스트를 직접 수정해주세요.
 -->
 <html lang="ko">
 
@@ -366,7 +370,17 @@
     }
 
     .photo-frame.eventcut {
-      height: 600px;
+      width: calc(100% + 40px);
+      margin-left: -20px;
+      aspect-ratio: 4 / 3;
+      height: auto;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    .photo-frame.eventcut img {
+      object-fit: contain;
     }
 
     .photo-frame img {
@@ -406,6 +420,11 @@
       border-radius: 18px;
     }
 
+    .photo-grid .photo-frame.eventcut {
+      height: auto;
+      border-radius: 0;
+    }
+
     .photo-grid .photo-fallback {
       font-size: 12.5px;
       padding: 10px;
@@ -413,6 +432,32 @@
 
     .photo-grid .photo-fallback .icon {
       font-size: 24px;
+    }
+
+    .goods-example-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .goods-example-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: 0 4px 14px rgba(107, 74, 59, 0.07);
+    }
+
+    .photo-frame.square {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+    }
+
+    .goods-example-story {
+      margin: 10px 2px 2px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--brown-soft);
     }
 
     .photo-caption {
@@ -801,7 +846,7 @@
         <div class="progress-fill" id="progressFill"></div>
       </div>
     </div>
-    
+
     <main>
 
       <!-- Screen 0 : Landing hook -->
@@ -852,8 +897,8 @@
         </p>
 
         <div class="section-label">부스 사진</div>
-        <div class="photo-frame vending">
-          <img src="images/goods.png" alt="추억멍 부스 사진"
+        <div class="photo-frame eventcut">
+          <img src="images/goods.png" alt="뇸뇸 부스 사진"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         </div>
 
@@ -886,24 +931,30 @@
         </div>
 
         <div class="section-label">커스텀 굿즈 예시</div>
-        <div class="photo-grid">
-          <div>
-            <div class="photo-frame">
-              <img src="images/sample1.jpeg" alt="커스텀 굿즈 예시1 - 폰케이스"
+        <div class="goods-example-list">
+          <div class="goods-example-card">
+            <div class="photo-frame square">
+              <img src="images/sample1.jpeg" alt="커스텀 굿즈 예시1 - 레몬 플라워 폰케이스&에어팟케이스"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             </div>
+            <p class="goods-example-story">친구랑 카페 테라스에서 레몬티 마시던 오후, 평범한듯 하지만 6개월간의 타지생활 후 <b>오랜만에 만난 친구와의 여유로운 시간이 너무 소중했다고 말씀해 주셨는데요,</b> 그날의 햇살과 꽃향기를 담은 레몬 플라워 무늬를 그려드렸어요. 폰케이스랑
+              에어팟케이스를 세트로 맞추니 볼 때마다 그날의 오후가 떠오르실 것 같아요.</p>
           </div>
-          <div>
-            <div class="photo-frame">
-              <img src="images/sample2.jpeg" alt="커스텀 굿즈 예시2 - 볼펜"
+          <div class="goods-example-card">
+            <div class="photo-frame square">
+              <img src="images/sample2.jpeg" alt="커스텀 굿즈 예시2 - 초록 공룡 폰케이스&에어팟케이스"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             </div>
+            <p class="goods-example-story">여행 중 처음 만난 순간 웃음이 터졌던 <b>우리 커플의 별명이 '공룡'이셨다고 해요,</b> 모험적인 것과 도전하는 것을 좋아했던 공통점이 너무 잘맞으면서도 순수한 귀여움도 닮아있더라구요, 그 이야기를 순둥순둥한 초록 공룡 캐릭터로
+              담아보았어요. 커플템으로 하나씩 나눠 드렸습니다.</p>
           </div>
-          <div>
-            <div class="photo-frame">
-              <img src="images/sample3.jpeg" alt="커스텀 굿즈 예시3 - 텀블러"
+          <div class="goods-example-card">
+            <div class="photo-frame square">
+              <img src="images/sample3.jpeg" alt="커스텀 굿즈 예시3 - 베이지 곰돌이 폰케이스&에어팟케이스"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             </div>
+            <p class="goods-example-story"><b>어릴 적부터 늘 곁에 있던 낡은 곰인형 이야기</b>, 그 포근했던 느낌 그대로 베이지톤 곰돌이 패턴으로 만들어드렸어요. 나만의 소소하고 소중한 애착인형 하나씩 있으시죠? 손에 쥘 때마다
+              그때처럼 마음이 편안해지실 것 같아요.</p>
           </div>
         </div>
 
@@ -984,7 +1035,7 @@
           </ul>
         </div>
 
-        <div class="section-label">참여하면 이런 굿즈를 받아가요</div>
+        <div class="section-label">!! 특별 EVENT !!</div>
         <div class="photo-grid">
           <div>
             <div class="photo-frame eventcut">
@@ -992,6 +1043,10 @@
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             </div>
           </div>
+        </div>
+
+        <div class="section-label">참여하면 이런 굿즈를 받아가요</div>
+        <div class="photo-grid">
           <div>
             <div class="photo-frame">
               <img src="images/sample4.jpeg" alt="완성 예시1 - 여행 순간 폰케이스"
